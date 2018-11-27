@@ -5,8 +5,8 @@
 #ifndef ALG_DS_QUICK_SORT_H
 #define ALG_DS_QUICK_SORT_H
 
-#include "insert_sort.h"
 
+typedef int ElementType;
 void quick_sort(ElementType arr[], int len);
 
 #endif //ALG_DS_QUICK_SORT_H
