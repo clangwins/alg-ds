@@ -69,7 +69,7 @@ void quick_sort(ElementType arr[], int len) {
 }
 
 int main() {
-    ElementType a[] = {8,7, 9, 12, 3, 5, 6, 32, 1, 43, 2};
+    ElementType a[] = {8, 7, 9, 12, 3, 5, 6, 32, 1, 43, 2};
     quick_sort(a, sizeof(a) / sizeof(int));
 
     printf("%d\n", check_sorted(a, sizeof(a) / sizeof(int)));

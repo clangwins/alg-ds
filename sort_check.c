@@ -17,7 +17,8 @@ bool check_sorted(ElementType arr[], unsigned int len) {
 
 void print_arr(ElementType arr[], unsigned int len) {
     int i = 0;
-    while (++i < len) {
-        printf("%d ", arr[i]);
+    while (i < len) {
+        printf("%d ", arr[i++]);
     }
+    printf("\n");
 }
