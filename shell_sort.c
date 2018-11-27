@@ -9,7 +9,6 @@
 //抽离比较函数--兼容其他类型数据结构
 bool less(ElementType i, ElementType j) {
     if (i <= j) return true;
-
     return false;
 }
 
@@ -29,14 +28,13 @@ void shell_sort(ElementType arr[], unsigned int len) {
         }
         h /= 3;
     }
-
 }
 
 int main() {
     ElementType a[] = {8, 7, 9, 12, 3, 5, 6, 32, 1, 43, 2};
     shell_sort(a, sizeof(a) / sizeof(int));
 
-    printf("%d\n", check_sorted(a, sizeof(a) / sizeof(int)));
+    printf("%d\n", check_sorted(a, sizeof(a) / sizeof(ElementType)));
     print_arr(a, sizeof(a) / sizeof(int));
     return 0;
 }
