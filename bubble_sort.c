@@ -87,7 +87,6 @@ int main() {
     bubble_sort3(c, sizeof(c) / sizeof(c[0]));
     printf("step times with flag: %d  compare times: %d\n", step_times, compare_times);
     print_arr(c, sizeof(c) / sizeof(c[0]));
-    print_arr(b, sizeof(b) / sizeof(b[0]));
 
     return 0;
 }
