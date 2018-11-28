@@ -3,14 +3,8 @@
 // 希尔排序作为插入排序的引申版，以h-系列的方式(h = 3h+1)，将数据整合成部分有序，从而提高插入排序的速度，
 //  排序之初，各个子数组都很短，排序之后子数组都是部分有序的，这两种情况都很适合插入排序
 
-#include "sort_check.h"
+#include "sort_tool.h"
 #include "shell_sort.h"
-
-//抽离比较函数--兼容其他类型数据结构
-bool less(ElementType i, ElementType j) {
-    if (i <= j) return true;
-    return false;
-}
 
 void shell_sort(ElementType arr[], unsigned int len) {
     if (len == 0) return;
