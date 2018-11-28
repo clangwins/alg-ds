@@ -9,7 +9,6 @@ bool check_sorted(ElementType arr[], unsigned int len) {
         if (arr[i + 1] < arr[i]) {
             return false;
         }
-
     }
 
     return true;
