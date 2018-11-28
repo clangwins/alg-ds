@@ -84,7 +84,7 @@ int main() {
     ElementType c[] = {12, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     step_times = 0;
     compare_times = 0;
-    bubble_sort2(c, sizeof(c) / sizeof(c[0]));
+    bubble_sort3(c, sizeof(c) / sizeof(c[0]));
     printf("step times with flag: %d  compare times: %d\n", step_times, compare_times);
     print_arr(c, sizeof(c) / sizeof(c[0]));
     return 0;
