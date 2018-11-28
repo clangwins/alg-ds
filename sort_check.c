@@ -5,12 +5,12 @@
 #include "sort_check.h"
 
 bool check_sorted(ElementType arr[], unsigned int len) {
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len - 1; i++) {
         if (arr[i + 1] < arr[i]) {
+//            printf("%d, %d, %d", i, arr[i + 1], arr[i]);
             return false;
         }
     }
-
     return true;
 }
 

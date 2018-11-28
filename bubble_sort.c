@@ -53,20 +53,6 @@ void bubble_sort2(ElementType arr[], int len) {
     }
 }
 
-
-/**
- * 在上面的基础，下面加入 flag ，尽可能减少交换次数
- */
-void bubble_sort3(ElementType arr[], int len) {
-    for (int i = 0; i < len - 1 && !check_sorted(arr, len); ++i) {
-        for (int j = 0; j < len - i - 1 && compare(arr[j + 1], arr[j]); ++j) {
-            swap(&arr[j + 1], &arr[j]);
-        }
-        step_times++;
-    }
-}
-
-
 int main() {
     ElementType a[] = {12, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     step_times = 0;
@@ -82,13 +68,6 @@ int main() {
     bubble_sort2(b, sizeof(b) / sizeof(b[0]));
     printf("step times with flag: %d  compare times: %d\n", step_times, compare_times);
     print_arr(b, sizeof(b) / sizeof(b[0]));
-
-    ElementType c[] = {12, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    step_times = 0;
-    compare_times = 0;
-    bubble_sort3(c, sizeof(c) / sizeof(c[0]));
-    printf("step times with flag: %d  compare times: %d\n", step_times, compare_times);
-    print_arr(c, sizeof(c) / sizeof(c[0]));
 
     return 0;
 }
