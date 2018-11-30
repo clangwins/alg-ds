@@ -40,7 +40,7 @@ void sort(ElementType arr[], ElementType arrTmp[], unsigned int lo, unsigned int
 }
 
 /*
- * 从前像后排序，比如：list结构， 则可以实现就地排序，无需额外空间。
+ * 从前向后排序，比如：针对list结构， 则可以实现就地排序，无需额外空间。
  */
 SORT_STATUS merge_sort_u(ElementType arr[], unsigned int len) {
     ElementType *arrTmp = calloc(sizeof(ElementType), len);
@@ -53,6 +53,7 @@ SORT_STATUS merge_sort_u(ElementType arr[], unsigned int len) {
                 merge(arr, arrTmp, lo, mid, hi);
             }
         }
+        free(arrTmp);
         return SORT_FIN;
     }
     return SORT_FAIL;
