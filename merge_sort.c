@@ -38,6 +38,27 @@ void sort(ElementType arr[], ElementType arrTmp[], unsigned int lo, unsigned int
     //优化点2: 已经有序则跳过合并
     if (arr[mid + 1] < arr[mid]) merge(arr, arrTmp, lo, mid, hi);
 }
+
+/*
+ * 从前像后排序，比如：list结构， 则可以实现就地排序，无需额外空间。
+ */
+SORT_STATUS merge_sort_u(ElementType arr[], unsigned int len) {
+    ElementType *arrTmp = calloc(sizeof(ElementType), len);
+    if (arrTmp != NULL) {
+        for (unsigned int sz = 1; sz < len; sz *= 2) {
+            printf("sz = %d\n", sz);
+            for (unsigned int lo = 0; lo < len - sz; lo += 2 * sz) {
+                unsigned int mid = lo + sz - 1;
+                unsigned int hi = ((mid + sz) < (len - 1)) ? (mid + sz) : (len - 1);
+                merge(arr, arrTmp, lo, mid, hi);
+            }
+        }
+        return SORT_FIN;
+    }
+    return SORT_FAIL;
+
+}
+
 SORT_STATUS merge_sort(ElementType arr[], unsigned int len) {
     ElementType *arrTmp = calloc(sizeof(ElementType), len);
 
@@ -51,8 +72,12 @@ SORT_STATUS merge_sort(ElementType arr[], unsigned int len) {
 
 int main() {
     ElementType a[] = {8, 7, 17, 9, 1, 32, 3, 5, 6, 43, 2, 13, 23, 44, 55, 22, 43, 66, 123, 456, 42};
-    merge_sort(a, sizeof(a) / sizeof(int));
-
+    merge_sort_u(a, sizeof(a) / sizeof(int));
     printf("%d\n", check_sorted(a, sizeof(a) / sizeof(ElementType)));
     print_arr(a, sizeof(a) / sizeof(int));
+
+    ElementType b[] = {8, 7, 17, 9, 1, 32, 3, 5, 6, 43, 2, 13, 23, 44, 55, 22, 43, 66, 123, 456, 42};
+    merge_sort(b, sizeof(b) / sizeof(ElementType));
+    printf("%d\n", check_sorted(b, sizeof(b) / sizeof(ElementType)));
+    print_arr(a, sizeof(a) / sizeof(ElementType));
 }
