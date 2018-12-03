@@ -12,7 +12,7 @@
  3. [x] [Merge Sort](merge_sort.c)
  4. [x] [Bubble Sort](bubble_sort.c)
  5. [x] [Quick Sort](quick_sort.c)
- 6. [ ] [Select Sort](select_sort.c)
+ 6. [x] [Select Sort](select_sort.c)
  7. [ ] [Heap Sort](heap_sort.c)
 
 
