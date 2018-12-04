@@ -8,4 +8,5 @@
 //抽离比较函数--兼容其他类型数据结构
 #define less(i, j)(i < j)
 #define swap(a, b)({if (a != b) {a ^= b; b ^= a; a ^= b;}})
+#define compare(i, j)(i - j)
 #endif //CODE_SORT_TOOL_H
