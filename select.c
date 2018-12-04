@@ -21,9 +21,9 @@ void select_sort(ElementType arr[], unsigned int len) {
     int j = len;
     int max = 0, min = 0;
     bool iseven = len % 2 == 0 ? true : false;
+
     while (len / 2 < j--) {
         int i = len - j - 1;
-        
         extremum(arr, i, j, &max, &min);
         swap(arr[i], arr[min]);
 
