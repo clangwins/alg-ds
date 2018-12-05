@@ -6,9 +6,6 @@
 #include "sort_check.h"
 #include "sort_tool.h"
 
-int compare(ElementType i, ElementType j) {
-    return i - j;
-}
 void extremum(ElementType arr[], int lo, int hi, int *max, int *min) {
     *max = *min = lo;
     while (lo <= hi) {
@@ -24,7 +21,7 @@ void select_sort(ElementType arr[], unsigned int len) {
     while (len / 2 < j--) {
         int i = len - j - 1;
         extremum(arr, i, j, &max, &min);
-        
+
         swap(arr[i], arr[min]);
 
         //处理最大值为i的情况
