@@ -6,12 +6,13 @@
 #include "sort_check.h"
 #include "sort_tool.h"
 
-void extremum(ElementType arr[], int lo, int hi, int *max, int *min) {
+void extremum(ElementType const arr[], int lo, int hi, int *max, int *min) {
     *max = *min = lo;
+    ElementType v = arr[hi];
     while (lo <= hi) {
-        if (compare(arr[hi], arr[*min]) <= 0) *min = hi;
-        if (compare(arr[*max], arr[hi]) <= 0) *max = hi;
-        hi--;
+        if (compare(v, arr[*min]) <= 0) *min = hi;
+        if (compare(arr[*max], v) <= 0) *max = hi;
+        v = arr[--hi];
     }
 }
 void select_sort(ElementType arr[], unsigned int len) {
