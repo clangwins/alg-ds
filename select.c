@@ -30,14 +30,14 @@ void select_sort(ElementType arr[], unsigned int len) {
         //处理偶数行为
         if (iseven && j <= i) break;
 
-        if (max == i) continue;
-
+        //处理最大值为i的情况
+        if (max == i) max = min;
         swap(arr[j], arr[max]);
     }
 
 }
 int main() {
-    ElementType a[] = {8, 7, 17, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 8, 1, 44, 55, 22, 43, 66, 123, 456, 42};
+    ElementType a[] = {1118, 7, 17, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 8, 1, 44, 55, 22, 43, 66, 123, 456, 42};
     select_sort(a, sizeof(a) / sizeof(ElementType));
     printf("%d\n", check_sorted(a, sizeof(a) / sizeof(ElementType)));
     print_arr(a, sizeof(a) / sizeof(int));
