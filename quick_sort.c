@@ -3,6 +3,7 @@
 //
 
 #include "quick_sort.h"
+#include "sort_check.h"
 
 void q_sort(ElementType arr[], int low, int high) {
     if (low >= high) {
@@ -14,12 +15,12 @@ void q_sort(ElementType arr[], int low, int high) {
 
     while (l < r) {
         // 先从左边开始找一个大于 flag 的值
-        while (l < r && arr[r] > tmp) {
+        while (l < r && arr[r] >= tmp) {
             r--;
         }
 
         // 再从右边找一个 小于 flag 的值
-        while (l < r && arr[l] < tmp) {
+        while (l < r && arr[l] <= tmp) {
             l++;
         }
 
@@ -32,11 +33,11 @@ void q_sort(ElementType arr[], int low, int high) {
         // 开始下一组查找
     }
 
-    arr[l] = arr[r];
+    arr[low] = arr[r];
     arr[r] = tmp;
 
-    q_sort2(arr, low, r - 1);
-    q_sort2(arr, r + 1, high);
+    q_sort(arr, low, r - 1);
+    q_sort(arr, r + 1, high);
 }
 
 void q_sort2(ElementType arr[], int low, int high) {
@@ -48,11 +49,11 @@ void q_sort2(ElementType arr[], int low, int high) {
     ElementType tmp = arr[l];
 
     while (l < r) {
-        while (l < r && arr[r] > tmp) {
+        while (l < r && arr[r] >= tmp) {
             r--;
         }
         arr[l] = arr[r];
-        while (l < r && arr[l] < tmp) {
+        while (l < r && arr[l] <= tmp) {
             l++;
         }
         arr[r] = arr[l];
@@ -60,8 +61,8 @@ void q_sort2(ElementType arr[], int low, int high) {
 
     arr[l] = tmp;
 
-    q_sort(arr, low, r - 1);
-    q_sort(arr, r + 1, high);
+    q_sort2(arr, low, r - 1);
+    q_sort2(arr, r + 1, high);
 }
 
 void quick_sort(ElementType arr[], int len) {
@@ -69,7 +70,7 @@ void quick_sort(ElementType arr[], int len) {
 }
 
 int main() {
-    ElementType a[] = {8, 7, 9, 12, 3, 5, 6, 32, 1, 43, 2};
+    ElementType a[] = {8, 7, 2, 9, 12, 3, 5, 6, 32, 1, 43, 2, 2};
     quick_sort(a, sizeof(a) / sizeof(int));
 
     printf("%d\n", check_sorted(a, sizeof(a) / sizeof(int)));

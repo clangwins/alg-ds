@@ -4,14 +4,7 @@
 
 #include "select_sort.h"
 #include "sort_check.h"
-
-void swap(ElementType *a, ElementType *b) {
-    *a ^= *b;
-    *b ^= *a;
-    *a ^= *b;
-}
-
-
+#include "sort_tool.h"
 
 int select_min_elem(ElementType arr[], int lo, int hi) {
     int k = lo;
@@ -33,15 +26,14 @@ int select_min_elem(ElementType arr[], int lo, int hi) {
 void select_sort(ElementType arr[], int len) {
     for (int i = 0; i < len; ++i) {
         int k = select_min_elem(arr, i, len);
-        if (k != i) swap(&arr[i], &arr[k]);
+        if (k != i) swap(arr[i], arr[k]);
     }
 }
 
 void select_elem(ElementType arr[], int lo, int hi, int *k, int *j) {
     *k = *j = lo;
 
-
-    for (int i = lo+1; i < hi; ++i) {
+    for (int i = lo; i <= hi; ++i) {
         if (arr[i] < arr[*k]) *k = i;
         if (arr[*j] < arr[i]) *j = i;
     }
@@ -54,20 +46,18 @@ void select_elem(ElementType arr[], int lo, int hi, int *k, int *j) {
  * @param len
  */
 void select_sort2(ElementType arr[], int len) {
-    for (int i = 0; i < len / 2; ++i) {
-        int k, j;
-        select_elem(arr, i, len - i, &k, &j);
+    for (int i = 0, j = len - 1; i < j; ++i, --j) {
+        int max, min;
+        select_elem(arr, i, j, &min, &max);
 
-        if (k != i)
-            swap(&arr[i], &arr[k]);
-
-        if (j != len - i - 1 && arr[len - i - 1] < arr[j] )
-            swap(&arr[len - i - 1], &arr[j]);
+        swap(arr[i], arr[min]);
+        if (max == i) max = min;
+        swap(arr[max], arr[j]);
     }
 }
 
 int main() {
-    ElementType a[] = {11, 12, 10, 9, 6, 7, 1, 2, 3, 4, 8};
+    ElementType a[] = {1118, 7, 17, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 8, 1, 44, 55, 22, 43, 66, 123, 456, 42};
     select_sort2(a, sizeof(a) / sizeof(a[0]));
 
     printf("%d\n", check_sorted(a, sizeof(a) / sizeof(a[0])));
