@@ -20,18 +20,16 @@ void extremum(ElementType arr[], int lo, int hi, int *max, int *min) {
 void select_sort(ElementType arr[], unsigned int len) {
     int j = len;
     int max = 0, min = 0;
-    bool iseven = len % 2 == 0 ? true : false;
 
     while (len / 2 < j--) {
         int i = len - j - 1;
         extremum(arr, i, j, &max, &min);
+        
         swap(arr[i], arr[min]);
-
-        //处理偶数行为
-        if (iseven && j <= i) break;
 
         //处理最大值为i的情况
         if (max == i) max = min;
+
         swap(arr[j], arr[max]);
     }
 
