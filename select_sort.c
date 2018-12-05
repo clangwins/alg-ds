@@ -33,8 +33,7 @@ void select_sort(ElementType arr[], int len) {
 void select_elem(ElementType arr[], int lo, int hi, int *k, int *j) {
     *k = *j = lo;
 
-
-    for (int i = lo+1; i < hi; ++i) {
+    for (int i = lo; i <= hi; ++i) {
         if (arr[i] < arr[*k]) *k = i;
         if (arr[*j] < arr[i]) *j = i;
     }
@@ -49,7 +48,7 @@ void select_elem(ElementType arr[], int lo, int hi, int *k, int *j) {
 void select_sort2(ElementType arr[], int len) {
     for (int i = 0, j = len - 1; i < j; ++i, --j) {
         int max, min;
-        select_elem(arr, i, len - i, &min, &max);
+        select_elem(arr, i, j, &min, &max);
 
         swap(arr[i], arr[min]);
         if (max == i) max = min;
