@@ -14,5 +14,5 @@
  5. [x] [Quick Sort](quick_sort.c)
  6. [x] [Select Sort](select_sort.c)
  7. [ ] [Heap Sort](heap_sort.c)
-
+ 8. [ ] [Priority Queues](priority_queues.c)
 
