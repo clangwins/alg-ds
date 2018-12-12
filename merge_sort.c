@@ -43,7 +43,7 @@ void sort(ElementType arr[], ElementType arrTmp[], unsigned int lo, unsigned int
  * 从前向后排序，比如：针对list结构， 则可以实现就地排序，无需额外空间。
  */
 SORT_STATUS merge_sort_u(ElementType arr[], unsigned int len) {
-    ElementType *arrTmp = calloc(sizeof(ElementType), len);
+    ElementType *arrTmp = calloc(len, sizeof(ElementType));
     if (arrTmp != NULL) {
         for (unsigned int sz = 1; sz < len; sz *= 2) {
             printf("sz = %d\n", sz);
