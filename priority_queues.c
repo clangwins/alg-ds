@@ -13,6 +13,7 @@ char **keys;
 unsigned int N = 0;
 char *strings[] = {"z", "c", "d", "a", "t", "q", "y", "h", "l", "q"};
 
+
 void sink(int k) {
     while (k <= N / 2) {
         int i = 2 * k;
@@ -29,6 +30,7 @@ void swim(unsigned int k) {
         k /= 2;
     }
 }
+
 void insert(ElementType v, char *s) {
     pq[++N] = v;
     qp[v] = N;
@@ -43,6 +45,7 @@ void exch(ElementType *a, ElementType *b) {
         *a ^= *b;
     }
 }
+
 ElementType delMin() {
     ElementType v = pq[1];
     exch(&pq[1], &pq[N--]);
@@ -50,6 +53,7 @@ ElementType delMin() {
     sink(1);
     return v;
 }
+
 
 int size() {
     return N;
