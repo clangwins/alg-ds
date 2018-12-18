@@ -15,4 +15,6 @@
  6. [x] [Select Sort](select_sort.c)
  7. [x] [Heap Sort](heap_sort.c)
  8. [x] [Priority Queues](priority_queues.c)
+ 9. [ ] [Trie Tree](trie_tree.c)
+ 10.[x] [KMP search](kmp_search.c)
 
