@@ -6,85 +6,129 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <wchar.h>
+#include <iconv.h>
+#include <locale.h>
 #include "trie_tree.h"
 
 #define UTF8_CHAR_LEN( byte ) ((( 0xE5000000 >> (( byte >> 3 ) & 0x1e )) & 3 ) + 1)
 
-void resize_children(trie_node **node_ref) {
-    trie_node *new_node = NULL;
-
-    if ((*node_ref) == NULL || (*node_ref)->children_count == 0) {
-        new_node = calloc(1, sizeof(trie_node));
-        new_node->key = calloc(4, sizeof(char));
-        new_node->children_count = 2;
-        new_node->children = calloc((size_t)new_node->children_count, sizeof(trie_node));
-    } else {
-        new_node = calloc(1, sizeof(trie_node));
-        new_node->key = calloc(4, sizeof(char));
-        new_node->children_count = 2 * (*node_ref)->children_count;
-        new_node->children = calloc((size_t)new_node->children_count, sizeof(trie_node));
-        memcpy(new_node->children, (*node_ref)->children, (*node_ref)->children_count * sizeof(*node_ref));
-    }
-
-    *node_ref = new_node;
+void init_node(trie_node *n, char *k) {
+    n->key = calloc(4, sizeof(char));
+    memcpy(n->key, k, strlen(k));
+    n->count = MIN_CHILDREN;
 }
 
-void init(trie_tree **root, char *words, size_t len) {
-    *root = calloc(1, sizeof(trie_tree));
-    resize_children(&(*root)->root);
-    trie_node *node_ref = (*root)->root;
+trie_tree* create() {
+    trie_tree *t = calloc(1, sizeof(trie_tree));
+    trie_node *n = calloc(1, sizeof(trie_node));
+    init_node(n, "\0");
+    t->root = n;
 
+    return t;
+}
+
+int compare(trie_node *n, char *k) {
+    if (n == NULL) return -1;
+
+    return strcmp(n->key, k);
+}
+
+trie_node* get_next(trie_node *n, char *word) {
+    for (int i = 0; i < n->index; ++i) {
+        trie_node *p = n->children[i];
+        if (compare(p, word) == 0) {
+            return p;
+        }
+    }
+
+    return NULL;
+}
+
+void update(trie_node *n, char *word) {
+    size_t len = strlen(word);
     int utf8_len = 0;
-    for (int i = 0; i < len; i++) {
-        utf8_len = UTF8_CHAR_LEN(*(words + i));
 
+    for (int i = 0; i < len; ++i) {
+        utf8_len = UTF8_CHAR_LEN(*(word + i));
         if (utf8_len > 0) {
             char wd[4] = {};
-            memcpy(wd, (words + i), utf8_len);
+            memcpy(wd, (word + i), utf8_len);
             i += utf8_len - 1;
 
-            if (strcmp(wd, ",") == 0) {
-                node_ref = (*root)->root;
-                continue;
-            }
+            trie_node *p = get_next(n, wd);
 
-            bool found = false;
-            for (int j = 0; j < (node_ref->next_index); ++j) {
-                trie_node *n = *(node_ref->children + j);
-                if (n != NULL && strcmp(n->key, wd) == 0) {
-                    node_ref = n;
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                trie_node *n = NULL;
-                resize_children(&n);
-                memcpy(n->key, wd, utf8_len);
-                *(node_ref->children + node_ref->next_index) = n;
-                node_ref->next_index++;
-                node_ref = n;
+            if (p != NULL) {
+                n = p;
+            } else {
+                p = calloc(1, sizeof(trie_node));
+                init_node(p, wd);
+                n->children[n->index++] = p;
+                n = p;
             }
         }
     }
 }
 
-void print_node(trie_node *n) {
-    if (n == NULL) return;
+void insert(trie_tree *t, char *words[], int len) {
+    trie_node *n = t->root;
 
-    for (int i = 0; i < n->next_index; ++i) {
-        printf("%s", n->key);
-        print_node(*(n->children + i));
+    for (int i = 0; i < len; ++i) {
+        char *word = *(words + i);
+        update(n, word);
     }
 }
 
+void print_node(trie_node *n) {
+    if (n == NULL) return;
+    printf("%s\n", n->key);
+
+    for (int i = 0; i < n->index; ++i) {
+        print_node(n->children[i]);
+    }
+}
+
+//int search(trie_tree *t, char *word) {
+//    trie_node *n = t->root;
+//    size_t len = strlen(word);
+//    int utf8_len = 0;
+//    int wd_len = 0;
+//    bool flag = false;
+//
+//    for (int i = 0; i < len; ++i) {
+//        utf8_len = UTF8_CHAR_LEN(*(word + i));
+//        if (utf8_len > 0) {
+//            char wd[4] = {};
+//            memcpy(wd, (word + i), utf8_len);
+//            trie_node *p = get_next(n, wd);
+//            if (p == NULL) {
+//                break;
+//            }
+//
+//            wd_len++;
+//            if (p->index > 0) {
+//                n = p;
+//            } else {
+//                flag = true;
+//            }
+//        }
+//    }
+//
+//    if (flag)  {
+//        wd_len = 0;
+//    }
+//
+//    return wd_len;
+//}
+
 int main() {
-    char *w = "王八羔子,王八蛋";
-    const size_t len = strlen(w) + 1;
+    char *w[2] = {"王八羔子", "王八蛋"};
+    trie_tree *t = create();
+    insert(t, w, 2);
 
-    trie_tree *root;
-    init(&root, w, len);
+    print_node(t->root);
 
-    print_node(root->root);
+//    char *ctx = "你就是个王八蛋";
+//    int pos = search(t, ctx);
+//
+//    printf("%d\n", pos);
 }

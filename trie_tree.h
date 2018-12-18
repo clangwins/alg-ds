@@ -7,17 +7,19 @@
 
 #include <stdbool.h>
 
+#define MIN_CHILDREN 4
+
 typedef struct trie_node_s {
     char *key;
-    int children_count;
-    int next_index;
-    struct trie_node_s **children;
+    int count;
+    int index;
+    struct trie_node_s* children[MIN_CHILDREN];
 } trie_node;
 
 typedef struct trie_tree_s {
     trie_node *root;
 } trie_tree;
 
-void init(trie_tree **root, char *words, size_t len);
+trie_tree* create();
 
 #endif //ALG_DS_TRIE_TREE_H
