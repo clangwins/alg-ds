@@ -7,6 +7,7 @@
    [google C++ styleguide](https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/headers) 
    
 Sort
+
      1.  [x] [Insert Sort](insert_sort.c)
      2.  [x] [Shell Sort](shell_sort.c)
      3.  [x] [Merge Sort](merge_sort.c)
@@ -19,6 +20,7 @@ Sort
 
 
 Search
+
     1. [x] [RedBlack Tree](redblack_tree.c)
     2. [ ] [Trie Tree](trie_tree.c)
     3. [x] [KMP search](kmp_search.c)
