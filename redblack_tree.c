@@ -50,7 +50,9 @@ pNode rotateRight(pNode h) {
 }
 
 pNode putHandler(pNode n, ElementType key, ElementType val) {
-    if (n == NULL) return InitNode(key, val, RED, 0);
+    if (n == NULL) {
+        return InitNode(key, val, RED, 0);
+    }
     int cmp = compare(key, n->key);
 
     if (cmp < 0) n->left = putHandler(n->left, key, val);
@@ -58,16 +60,17 @@ pNode putHandler(pNode n, ElementType key, ElementType val) {
     else n->value = val;
 
     if (isRed(n->right) && !isRed(n->left)) n = rotateLeft(n);
-    if (isRed(n->left) && !isRed(n->left->left)) n = rotateRight(n);
+    if (isRed(n->left) && isRed(n->left->left)) n = rotateRight(n);
     if (isRed(n->right) && isRed(n->left)) flipColors(n);
 
     n->N = size(n->left) + size(n->right) + 1;
 
     return n;
 }
-void put(pNode root, ElementType key, ElementType val) {
+pNode put(pNode root, ElementType key, ElementType val) {
     root = putHandler(root, key, val);
     root->color = BLACK;
+    return root;
 }
 
 ElementType get(pNode n, ElementType key) {
@@ -80,11 +83,75 @@ ElementType get(pNode n, ElementType key) {
     return -1;
 }
 
+
+
+// restore red-black tree invariant
+//private Node balance(Node h) {
+//// assert (h != null);
+//
+//    if (isRed(h.right)) h = rotateLeft(h);
+//    if (isRed(h.left) && isRed(h.left.left)) h = rotateRight(h);
+//    if (isRed(h.left) && isRed(h.right)) flipColors(h);
+//
+//    h.size = size(h.left) + size(h.right) + 1;
+//    return h;
+//}
+
+
+//TODO delete: delete key in node and return key's value
+ElementType delete(pNode n, ElementType key) {
+    return -1;
+}
+
+pNode balance(pNode n) {
+    if (isRed(n->right)) n = rotateLeft(n);
+    if (isRed(n->left) && isRed(n->left->left)) n = rotateRight(n);
+    if (isRed(n->left) && isRed(n->right)) flipColors(n);
+    n->N = size(n->left) + size(n->right) + 1;
+    return n;
+}
+
+pNode moveRedLeft(pNode n) {
+    flipColors(n);
+    if (isRed(n->right->left)) {
+        n->right = rotateRight(n->right);
+        n = rotateLeft(n);
+        flipColors(n);
+    }
+    return n;
+}
+
+pNode deleteMinDo(pNode n) {
+    if (n->left == NULL)
+        return NULL;
+
+    if (!isRed(n->left) && !isRed(n->left->left))
+        n = moveRedLeft(n);
+
+    n->left = deleteMinDo(n->left);
+
+    return balance(n);
+
+}
+pNode deleteMin(pNode n) {
+    if (!isRed(n->left) && !isRed(n->right))
+        n->color = RED;
+
+    n = deleteMinDo(n);
+
+    if (n != NULL) n->color = BLACK;
+    return n;
+}
+
+//TODO delete max: delete max key in node and return key's value
+ElementType deleteMax(pNode n, ElementType key) {
+    return -1;
+}
+
 void Output(ElementType Element) {
     printf("%d ", Element);
 }
 
-/* START: fig12_13.txt */
 /* Print the tree, watch out for NullNode, */
 /* and skip header */
 
@@ -101,16 +168,21 @@ void PrintTree(pNode T) {
 }
 
 int main() {
-    pNode root = InitNode(1, 1, RED, 0);
     ElementType a[] = {1118, 7, 17, 43, 66, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 1, 44, 55, 22, 43, 66, 123, 456, 42};
     int len = sizeof(a) / sizeof(ElementType);
-    while (len-- > 0) {
-        put(root, a[len], a[len]);
-    }
+    
+    pNode root = NULL;
+    while (len-- > 0)
+        root = put(root, a[len], a[len]);
 
-    printf("%d\n", root->N);
+    printf("bst number is: %d\n", root->N);
     printf("search not exist key 9999's value: %d\n", get(root, 9999));
+    PrintTree(root);
 
+    //test delete min
+    root = deleteMin(root);
+    root = deleteMin(root);
+    printf("\n");
     PrintTree(root);
 
 }
