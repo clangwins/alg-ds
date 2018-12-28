@@ -102,7 +102,7 @@ static void DoPrint(pNode T) {
 }
 
 void PrintTree(pNode T) {
-    DoPrint(T->right);
+    DoPrint(T);
 }
 
 int main() {
@@ -112,6 +112,8 @@ int main() {
     while (len-- > 0) {
         put(root, a[len], a[len]);
     }
+
+    printf("%d\n", root->N);
 
     PrintTree(root);
 
