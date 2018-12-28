@@ -52,12 +52,10 @@ pNode rotateRight(pNode h) {
 pNode putHandler(pNode n, ElementType key, ElementType val) {
     if (n == NULL) return InitNode(key, val, RED, 0);
     int cmp = compare(key, n->key);
-    if (cmp < 0)
-        n->left = putHandler(n->left, key, val);
-    else if (cmp > 0)
-        n->right = putHandler(n->right, key, val);
-    else
-        n->value = val;
+
+    if (cmp < 0) n->left = putHandler(n->left, key, val);
+    else if (cmp > 0) n->right = putHandler(n->right, key, val);
+    else n->value = val;
 
     if (isRed(n->right) && !isRed(n->left)) n = rotateLeft(n);
     if (isRed(n->left) && !isRed(n->left->left)) n = rotateRight(n);
@@ -75,12 +73,9 @@ void put(pNode root, ElementType key, ElementType val) {
 ElementType get(pNode n, ElementType key) {
     while (n != NULL) {
         int cmp = compare(key, n->key);
-        if (cmp > 0)
-            n = n->right;
-        else if (cmp < 0)
-            n = n->left;
-        else
-            return n->value;
+        if (cmp > 0) n = n->right;
+        else if (cmp < 0) n = n->left;
+        else return n->value;
     }
     return -1;
 }
@@ -114,6 +109,7 @@ int main() {
     }
 
     printf("%d\n", root->N);
+    printf("search not exist key 9999's value: %d\n", get(root, 9999));
 
     PrintTree(root);
 
