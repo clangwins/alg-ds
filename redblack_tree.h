@@ -8,7 +8,7 @@
 #include "sort_tool.h"
 
 #define isRed(n)({ n != NULL && n->color == RED;})
-#define flipColors(h) ({h->color = RED;h->right->color = h->left->color = BLACK; })
+#define flipColors(h) ({h->color = !h->color;h->right->color = !h->right->color; h->left->color = !h->left->color; })
 
 typedef enum COLOR { RED = 0, BLACK } COLOR;
 typedef struct Node {
@@ -16,7 +16,7 @@ typedef struct Node {
   ElementType value;
   struct Node *left, *right;
   int N;
-  bool color;
+  COLOR color;
 
 } *pNode, Node;
 pNode InitNode(ElementType key, ElementType val, COLOR color, int size);

@@ -22,5 +22,5 @@
  ### Search
 
    1. [x] [RedBlack Tree](redblack_tree.c)
-   2. [ ] [Trie Tree](trie_tree.c)
-   3. [x] [KMP search](kmp_search.c)
+   2. [x] [Trie Tree](trie_tree.c)
+   3. [ ] [KMP search](kmp_search.c)
