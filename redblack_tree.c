@@ -107,8 +107,10 @@ pNode moveRedLeft(pNode n) {
 }
 
 pNode deleteMinDo(pNode n) {
-    if (n->left == NULL)
+    if (n->left == NULL) {
+        DestroryNode(n);
         return NULL;
+    }
 
     if (!isRed(n->left) && !isRed(n->left->left))
         n = moveRedLeft(n);
