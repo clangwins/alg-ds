@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "redblack_tree.h"
 
-pNode InitNode(ElementType key, ElementType val, COLOR color, int size) {
+pNode initNode(ElementType key, ElementType val, COLOR color, int size) {
     pNode n = malloc(sizeof(Node));
     n->key = key;
     n->value = val;
@@ -16,7 +16,7 @@ pNode InitNode(ElementType key, ElementType val, COLOR color, int size) {
     return n;
 }
 
-void DestroryNode(pNode n) {
+void destroryNode(pNode n) {
     free(n);
 }
 
@@ -51,7 +51,7 @@ pNode rotateRight(pNode h) {
 
 pNode putHandler(pNode n, ElementType key, ElementType val) {
     if (n == NULL) {
-        return InitNode(key, val, RED, 0);
+        return initNode(key, val, RED, 0);
     }
     int cmp = compare(key, n->key);
 
@@ -107,8 +107,10 @@ pNode moveRedLeft(pNode n) {
 }
 
 pNode deleteMinDo(pNode n) {
-    if (n->left == NULL)
+    if (n->left == NULL) {
+        destroryNode(n);
         return NULL;
+    }
 
     if (!isRed(n->left) && !isRed(n->left->left))
         n = moveRedLeft(n);
@@ -133,25 +135,28 @@ ElementType deleteMax(pNode n, ElementType key) {
     return -1;
 }
 
-void Output(ElementType Element) {
+void output(ElementType Element) {
     printf("%d ", Element);
 }
 
 /* Print the tree, watch out for NullNode, */
 /* and skip header */
 
-static void DoPrint(pNode T) {
+static void printTree(pNode T) {
     if (T != NULL) {
-        DoPrint(T->left);
-        Output(T->value);
-        DoPrint(T->right);
+        printTree(T->left);
+        output(T->value);
+        printTree(T->right);
     }
 }
 
-void PrintTree(pNode T) {
-    DoPrint(T);
+void destoryTree(pNode n) {
+    if (n != NULL) {
+        destoryTree(n->left);
+        destoryTree(n->right);
+        destroryNode(n);
+    }
 }
-
 int main() {
     ElementType a[] = {1118, 7, 17, 43, 66, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 1, 44, 55, 22, 43, 66, 123, 456, 42};
     int len = sizeof(a) / sizeof(ElementType);
@@ -161,12 +166,13 @@ int main() {
 
     printf("bst number is: %d\n", root->N);
     printf("search not exist key 9999's value: %d\n", get(root, 9999));
-    PrintTree(root);
+    printTree(root);
 
     //test delete min
     root = deleteMin(root);
     root = deleteMin(root);
     printf("\n");
-    PrintTree(root);
+    printTree(root);
 
+    destoryTree(root);
 }
