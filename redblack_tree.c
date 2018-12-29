@@ -155,7 +155,6 @@ void PrintTree(pNode T) {
 int main() {
     ElementType a[] = {1118, 7, 17, 43, 66, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 1, 44, 55, 22, 43, 66, 123, 456, 42};
     int len = sizeof(a) / sizeof(ElementType);
-
     pNode root = NULL;
     while (len-- > 0)
         root = put(root, a[len], a[len]);
