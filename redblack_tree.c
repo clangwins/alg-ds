@@ -181,8 +181,10 @@ pNode deleteDo(pNode n, ElementType key) {
     } else {
         if (isRed(n->left))
             n = rotateRight(n);
-        if (compare(key, n->key) == 0 && n->right == NULL)
+        if (compare(key, n->key) == 0 && n->right == NULL) {
+            destroryNode(n);
             return NULL;
+        }
         if (!isRed(n->right) && !isRed(n->right->left))
             n = moveRedRight(n);
 
