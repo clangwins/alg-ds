@@ -67,10 +67,18 @@ pNode putHandler(pNode n, ElementType key, ElementType val) {
 
     return n;
 }
+
 pNode put(pNode root, ElementType key, ElementType val) {
     root = putHandler(root, key, val);
     root->color = BLACK;
     return root;
+}
+
+pNode min(pNode n) {
+    if (n->left == NULL)
+        return n;
+    else
+        return min(n->left);
 }
 
 ElementType get(pNode n, ElementType key) {
@@ -80,11 +88,6 @@ ElementType get(pNode n, ElementType key) {
         else if (cmp < 0) n = n->left;
         else return n->value;
     }
-    return -1;
-}
-
-//TODO delete: delete key in node and return key's value
-ElementType delete(pNode n, ElementType key) {
     return -1;
 }
 
@@ -101,6 +104,15 @@ pNode moveRedLeft(pNode n) {
     if (isRed(n->right->left)) {
         n->right = rotateRight(n->right);
         n = rotateLeft(n);
+        flipColors(n);
+    }
+    return n;
+}
+
+pNode moveRedRight(pNode n) {
+    flipColors(n);
+    if (isRed(n->left->left)) {
+        n = rotateRight(n);
         flipColors(n);
     }
     return n;
@@ -130,9 +142,74 @@ pNode deleteMin(pNode n) {
     return n;
 }
 
-//TODO delete max: delete max key in node and return key's value
-ElementType deleteMax(pNode n, ElementType key) {
-    return -1;
+pNode deleteMaxDo(pNode n) {
+
+    if (isRed(n->left))
+        n = rotateRight(n);
+
+    if (n->right == NULL) {
+        destroryNode(n);
+        return NULL;
+    }
+
+    if (!isRed(n->right) && !isRed(n->right->left))
+        n = moveRedRight(n);
+
+    n->right = deleteMaxDo(n->right);
+
+    return balance(n);
+
+}
+
+pNode deleteMax(pNode n) {
+    if (!isRed(n->left) && !isRed(n->right))
+        n->color = RED;
+
+    n = deleteMaxDo(n);
+
+    if (n != NULL) n->color = BLACK;
+    return n;
+}
+
+pNode deleteDo(pNode n, ElementType key) {
+
+    if (compare(key, n->key) < 0) {
+        if (!isRed(n->left) && !isRed(n->left->left))
+            n = moveRedLeft(n);
+
+        n->left = deleteDo(n->left, key);
+    } else {
+        if (isRed(n->left))
+            n = rotateRight(n);
+        if (compare(key, n->key) == 0 && n->right == NULL)
+            return NULL;
+        if (!isRed(n->right) && !isRed(n->right->left))
+            n = moveRedRight(n);
+
+        if (compare(key, n->key) == 0) {
+            pNode x = min(n->right);
+            n->key = x->key;
+            n->value = x->value;
+            n->right = deleteMin(n->right);
+        } else {
+            n->right = deleteDo(n->right, key);
+        }
+    }
+    return balance(n);
+
+}
+
+pNode delete(pNode n, ElementType key) {
+    if (get(n, key) < 0) {
+        return n;
+    }
+    if (!isRed(n->left) && !isRed(n->right))
+        n->color = RED;
+
+    n = deleteDo(n, key);
+
+    if (n != NULL) n->color = BLACK;
+    return n;
 }
 
 void output(ElementType Element) {
@@ -157,6 +234,7 @@ void destoryTree(pNode n) {
         destroryNode(n);
     }
 }
+
 int main() {
     ElementType a[] = {1118, 7, 17, 43, 66, 9, 6, 1, 32, 3, 5, 6, 43, 2, 13, 23, 1, 44, 55, 22, 43, 66, 123, 456, 42};
     int len = sizeof(a) / sizeof(ElementType);
@@ -171,6 +249,20 @@ int main() {
     //test delete min
     root = deleteMin(root);
     root = deleteMin(root);
+    printf("\n");
+    printTree(root);
+
+    //test delete max
+    root = deleteMax(root);
+    root = deleteMax(root);
+    printf("\n");
+    printTree(root);
+
+
+    //test delete
+    root = delete(root, 5);
+    root = delete(root, 6);
+    root = delete(root, 99999999);
     printf("\n");
     printTree(root);
 
